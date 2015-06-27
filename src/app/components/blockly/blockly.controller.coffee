@@ -3,6 +3,19 @@ angular.module "app"
 
     this.classes = {}
 
+    this.currentClass = ''
+    this.currentMethod = ''
+
+    this.createClass = ->
+      class_name = prompt("Class names: ")
+      this.currentClass = class_name
+      this.classes[class_name] = []
+
+    this.createMethod = ->
+      method_name = prompt("Method name: ")
+      this.currentMethod = method_name
+      this.classes[this.currentClass].push method_name
+
     this.blocks =
       Assert: [
         "assert_true",

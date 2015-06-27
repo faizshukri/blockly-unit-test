@@ -2,20 +2,22 @@
     <div class="row">
         <div class="col-sm-3">
             <div>
-                <a href="" class="btn btn-primary" style="width: 48%;">New class</a>
-                <a href="" class="btn btn-primary pull-right" style="width: 48%;">New method</a>
+                <a href="" ng-click="blockly.createClass()" class="btn btn-primary" style="width: 48%;">New class</a>
+                <a href="" ng-click="blockly.createMethod()" class="btn btn-primary pull-right" style="width: 48%;">New method</a>
             </div>
             <p class="clearfix"></p>
             <hr />
             <h2>Classes</h2>
             <div>
                 <select class="form-control" multiple size="6">
+                    <option ng-repeat="(key, val) in blockly.classes" ng-selected="key==blockly.currentClass">{{ key }}</option>
                 </select>
             </div>
             <hr />
             <h2>Methods</h2>
             <div>
                 <select class="form-control" multiple size="6">
+                    <option ng-repeat="method in blockly.classes[blockly.currentClass]" ng-selected="method==blockly.currentMethod">{{ method }}</option>
                 </select>
             </div>
             <hr />
