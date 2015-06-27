@@ -1,31 +1,42 @@
 <div id="blockly" ng-controller="BlocklyCtrl">
-    <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div>
+                <a href="" class="btn btn-primary" style="width: 48%;">New class</a>
+                <a href="" class="btn btn-primary pull-right" style="width: 48%;">New method</a>
+            </div>
+            <p class="clearfix"></p>
+            <hr />
+            <h2>Classes</h2>
+            <div>
+                <select class="form-control" multiple size="6">
+                </select>
+            </div>
+            <hr />
+            <h2>Methods</h2>
+            <div>
+                <select class="form-control" multiple size="6">
+                </select>
+            </div>
+            <hr />
+            <a href="" class="btn btn-success btn-lg btn-block">Generate jUnit</a>
+        </div>
+        <div class="col-sm-9">
+            <div id="blocklyDiv" style="height: 520px; width: 100%;"></div>
+        </div>
+    </div>
 
-    <xml id="toolbox" style="display: none">
-        <category name="Control">
-            <block type="controls_whileUntil"></block>
-            <block type="controls_repeat_ext"></block>
-        </category>
-        <category name="Logic">
-            <block type="controls_if"></block>
-            <block type="logic_compare"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_boolean"></block>
-        </category>
-        <category name="Math">
-            <block type="math_number"></block>
-            <block type="math_arithmetic"></block>
-        </category>
-        <category name="Text">
-            <block type="text"></block>
-            <block type="text_print"></block>
+
+    <xml id="toolbox" style="display: none" ng-init="init">
+        <category ng-repeat="(key, val) in blocks" name="{{key}}">
+            <block ng-repeat="type in val" type="{{ type }}"></block>
         </category>
     </xml>
 </div>
 
 <script>
-  $(function(){
-    var workspace = Blockly.inject('blocklyDiv',
-      {toolbox: document.getElementById('toolbox')});
-  });
+    setTimeout(function(){
+        var workspace = Blockly.inject('blocklyDiv',
+        {toolbox: document.getElementById('toolbox')});
+    }, 10);
 </script>
