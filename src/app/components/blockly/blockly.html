@@ -1,4 +1,4 @@
-<div id="blockly" ng-controller="BlocklyCtrl">
+<div id="blockly" ng-controller="BlocklyCtrl as blockly">
     <div class="row">
         <div class="col-sm-3">
             <div>
@@ -27,8 +27,8 @@
     </div>
 
 
-    <xml id="toolbox" style="display: none" ng-init="init">
-        <category ng-repeat="(key, val) in blocks" name="{{key}}">
+    <xml id="toolbox" style="display: none">
+        <category ng-repeat="(key, val) in blockly.blocks" name="{{key}}">
             <block ng-repeat="type in val" type="{{ type }}"></block>
         </category>
     </xml>

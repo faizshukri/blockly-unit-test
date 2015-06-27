@@ -1,9 +1,9 @@
 angular.module "app"
-  .controller "BlocklyCtrl", ($scope) ->
+  .controller "BlocklyCtrl", () ->
 
-    $scope.classes = {}
+    this.classes = {}
 
-    $scope.blocks =
+    this.blocks =
       Assert: [
         "assert_true",
         "assert_false",
