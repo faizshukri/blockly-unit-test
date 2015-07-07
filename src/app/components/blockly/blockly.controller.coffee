@@ -1,20 +1,36 @@
 angular.module "app"
-  .controller "BlocklyCtrl", () ->
+  .controller "BlocklyCtrl", ($filter) ->
 
-    this.classes = {}
+    this.classes = []
 
-    this.currentClass = ''
-    this.currentMethod = ''
+    this.selectedClass = {}
+    this.selectedMethod = {}
+    this.selectedTest = {}
 
     this.createClass = ->
-      class_name = prompt("Class names: ")
-      this.currentClass = class_name
-      this.classes[class_name] = []
+      class_name = prompt "Class names: "
+      if _.isEmpty class_name
+        return
+      this.selectedClass = { name: class_name, methods: []}
+      this.classes.push this.selectedClass
 
     this.createMethod = ->
-      method_name = prompt("Method name: ")
-      this.currentMethod = method_name
-      this.classes[this.currentClass].push method_name
+      method_name = prompt "Method name: "
+      if _.isEmpty method_name
+        return
+      # Assign method to selected method
+      this.selectedMethod = { name: method_name, tests: [] }
+      this.selectedTest = { name: _.snakeCase(method_name + 'Test' + ( this.selectedMethod.tests.length + 1 ) ) }
+      this.selectedMethod.tests.push this.selectedTest
+      # Add the new method to class's method
+      index = _.findIndex this.classes, this.selectedClass
+      this.classes[index].methods.push this.selectedMethod
+
+    this.createTest = ->
+      this.selectedTest = { name: _.snakeCase(this.selectedMethod.name + 'Test' + ( this.selectedMethod.tests.length + 1 ) ) }
+      class_index = _.findIndex this.classes, this.selectedClass
+      method_index = _.findIndex this.classes[class_index].methods, this.selectedMethod
+      this.classes[class_index].methods[method_index].tests.push this.selectedTest
 
     this.blocks =
       Assert: [
@@ -74,12 +90,6 @@ angular.module "app"
         "math_random_int",
         "math_random_float"
       ],
-      Procedure: [
-        "procedures_defreturn",
-        "procedures_defnoreturn",
-        "procedures_callnoreturn",
-        "procedures_ifreturn"
-      ],
       Text: [
         "text",
         "text_join",
@@ -95,7 +105,3 @@ angular.module "app"
         "text_prompt",
         "text_prompt_ext",
       ],
-      Variable: [
-        "variables_get",
-        "variables_set"
-      ]

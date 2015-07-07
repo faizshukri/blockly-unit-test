@@ -7,6 +7,12 @@ body {
     background-color: white;
     border: 1px solid #eee;
     padding-bottom: 20px;
+
+    #blockly {
+      .selectItem {
+        overflow-y: auto;
+      }
+    }
 }
 
 .browsehappy {

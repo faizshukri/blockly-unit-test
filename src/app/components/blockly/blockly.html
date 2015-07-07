@@ -1,23 +1,24 @@
 <div id="blockly" ng-controller="BlocklyCtrl as blockly">
     <div class="row">
         <div class="col-sm-3">
+            <div><h4 class="pull-left">Classes</h4><a href="" ng-click="blockly.createClass()" class="btn btn-primary pull-right">New class</a></div>
             <div>
-                <a href="" ng-click="blockly.createClass()" class="btn btn-primary" style="width: 48%;">New class</a>
-                <a href="" ng-click="blockly.createMethod()" class="btn btn-primary pull-right" style="width: 48%;">New method</a>
-            </div>
-            <p class="clearfix"></p>
-            <hr />
-            <h2>Classes</h2>
-            <div>
-                <select class="form-control" multiple size="6">
-                    <option ng-repeat="(key, val) in blockly.classes" ng-selected="key==blockly.currentClass">{{ key }}</option>
+                <select class="form-control selectItem" size="4" ng-model="blockly.selectedClass" ng-options="class.name for class in blockly.classes" ng-change="blockly.updateClass(blockly.selectedClass)">
+                    <option value="" ng-if="false"></option>
                 </select>
             </div>
             <hr />
-            <h2>Methods</h2>
+            <div><h4 class="pull-left">Methods</h4><a href="" ng-click="blockly.createMethod()" class="btn btn-primary pull-right">New method</a></div>
             <div>
-                <select class="form-control" multiple size="6">
-                    <option ng-repeat="method in blockly.classes[blockly.currentClass]" ng-selected="method==blockly.currentMethod">{{ method }}</option>
+                <select class="form-control selectItem" size="4" ng-model="blockly.selectedMethod" ng-options="method.name for method in blockly.selectedClass.methods">
+                    <option value="" ng-if="false"></option>
+                </select>
+            </div>
+            <hr />
+            <div><h4 class="pull-left">Tests</h4><a href="" ng-click="blockly.createTest()" class="btn btn-primary pull-right">New test</a></div>
+            <div>
+                <select class="form-control selectItem" size="4" ng-model="blockly.selectedTest" ng-options="test.name for test in blockly.selectedMethod.tests">
+                    <option value="" ng-if="false"></option>
                 </select>
             </div>
             <hr />
@@ -33,6 +34,9 @@
         <category ng-repeat="(key, val) in blockly.blocks" name="{{key}}">
             <block ng-repeat="type in val" type="{{ type }}"></block>
         </category>
+        <sep></sep>
+        <category name="Variables" custom="VARIABLE"></category>
+        <category name="Functions" custom="PROCEDURE"></category>
     </xml>
 </div>
 
