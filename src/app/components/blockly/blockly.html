@@ -10,14 +10,14 @@
             <hr />
             <div><h4 class="pull-left">Methods</h4><a href="" ng-click="blockly.createMethod()" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus "></i> New method</a></div>
             <div>
-                <select class="form-control selectItem" size="4" ng-model="blockly.selectedMethod" ng-options="method.name for method in blockly.selectedClass.methods">
+                <select class="form-control selectItem" size="4" ng-model="blockly.selectedMethod" ng-options="method.name for method in blockly.selectedClass.methods track by method.selected">
                     <option value="" ng-if="false"></option>
                 </select>
             </div>
             <hr />
             <div><h4 class="pull-left">Tests</h4><a href="" ng-click="blockly.createTest()" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus "></i> New test</a></div>
             <div>
-                <select class="form-control selectItem" size="4" ng-model="blockly.selectedTest" ng-options="test.name for test in blockly.selectedClass.tests">
+                <select class="form-control selectItem" size="4" ng-model="blockly.selectedTest" ng-options="test.name for test in blockly.selectedClass.tests  track by test.selected">
                     <option value="" ng-if="false"></option>
                 </select>
             </div>

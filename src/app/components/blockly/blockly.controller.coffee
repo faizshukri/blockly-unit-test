@@ -1,5 +1,5 @@
 angular.module "app"
-  .controller "BlocklyCtrl", ($filter) ->
+  .controller "BlocklyCtrl", ($filter, $scope) ->
 
     this.classes = []
 
@@ -11,30 +11,68 @@ angular.module "app"
       class_name = prompt "Class names: "
       if _.isEmpty class_name
         return
-      this.selectedClass = { name: class_name, methods: [], tests: [] }
+
+      # Get id of current selected, and change it to false
+      this.unselectSelected this.classes, this.classes
+      this.selectedClass = { name: class_name, methods: [], tests: [], selected: true }
+
+      # Create new class and mark it as selected
       this.classes.push this.selectedClass
 
     this.createMethod = ->
       method_name = prompt "Method name: "
       if _.isEmpty method_name
         return
-      # Assign method to selected method
-      this.selectedMethod = { name: method_name }
-      # Add the new method to class's method
-      index = this.getClassIndex()
-      this.classes[index].methods.push this.selectedMethod
+
+      # Get index of selected class
+      class_index = _.findIndex this.classes, {selected: true}
+
+      if class_index > -1
+        # Deselect selected method in the selected class
+        this.unselectSelected this.classes, this.classes[class_index].methods, class_index + '.'
+
+      # Set selected method
+      this.selectedMethod = { name: method_name, selected: true }
+      # Add method to the class
+      this.classes[class_index].methods.push this.selectedMethod
 
     this.createTest = ->
       test_name = prompt "Test method: "
       if _.isEmpty test_name
         return
-      this.selectedTest = { name: test_name }
-      index = this.getClassIndex()
-      this.classes[index].tests.push this.selectedTest
 
+      # Get index of selected class
+      class_index = _.findIndex this.classes, {selected: true}
+
+      if class_index > -1
+        # Deselect selected test in the selected class
+        this.unselectSelected this.classes, this.classes[class_index].tests, class_index + '.'
+
+      # Set selected test
+      this.selectedTest = { name: test_name, selected: true }
+      # Add test to the class
+      this.classes[class_index].tests.push this.selectedTest
+
+    this.unselectSelected = (target, search = [], base = '') ->
+      current_selected = _.findIndex(search, {selected: true})
+      _.set(target, base + current_selected + '.selected', false)
+
+    this.updateClass = ->
+      this.unselectSelected this.classes, this.classes
 
     this.getClassIndex = ->
       _.findIndex this.classes, this.selectedClass
+
+    this.getMethodIndex = ->
+      _.findIndex this.classes[this.getClassIndex()].methods, this.selectedMethod
+
+    $scope.$watch(angular.bind this, () -> this.selectedClass
+    (newVal, oldVal) ->
+      console.log this.classes
+      this.selectedMethod = { }
+      this.selectedTest = { }
+    )
+
     this.blocks =
       Assert: [
         "assert_true",
