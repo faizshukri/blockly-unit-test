@@ -11,7 +11,7 @@ angular.module "app"
       class_name = prompt "Class names: "
       if _.isEmpty class_name
         return
-      this.selectedClass = { name: class_name, methods: []}
+      this.selectedClass = { name: class_name, methods: [], tests: [] }
       this.classes.push this.selectedClass
 
     this.createMethod = ->
@@ -19,19 +19,22 @@ angular.module "app"
       if _.isEmpty method_name
         return
       # Assign method to selected method
-      this.selectedMethod = { name: method_name, tests: [] }
-      this.selectedTest = { name: _.snakeCase(method_name + 'Test' + ( this.selectedMethod.tests.length + 1 ) ) }
-      this.selectedMethod.tests.push this.selectedTest
+      this.selectedMethod = { name: method_name }
       # Add the new method to class's method
-      index = _.findIndex this.classes, this.selectedClass
+      index = this.getClassIndex()
       this.classes[index].methods.push this.selectedMethod
 
     this.createTest = ->
-      this.selectedTest = { name: _.snakeCase(this.selectedMethod.name + 'Test' + ( this.selectedMethod.tests.length + 1 ) ) }
-      class_index = _.findIndex this.classes, this.selectedClass
-      method_index = _.findIndex this.classes[class_index].methods, this.selectedMethod
-      this.classes[class_index].methods[method_index].tests.push this.selectedTest
+      test_name = prompt "Test method: "
+      if _.isEmpty test_name
+        return
+      this.selectedTest = { name: test_name }
+      index = this.getClassIndex()
+      this.classes[index].tests.push this.selectedTest
 
+
+    this.getClassIndex = ->
+      _.findIndex this.classes, this.selectedClass
     this.blocks =
       Assert: [
         "assert_true",
