@@ -13,7 +13,11 @@ angular.module "app"
         return
 
       # Get id of current selected, and change it to false
-      this.unselectSelected this.classes, this.classes
+      class_index = _.findIndex this.classes, {selected: true}
+
+      if class_index > -1
+        this.unselectSelected this.classes, this.classes
+
       this.selectedClass = { name: class_name, methods: [], tests: [], selected: true }
 
       # Create new class and mark it as selected
@@ -57,8 +61,10 @@ angular.module "app"
       current_selected = _.findIndex(search, {selected: true})
       _.set(target, base + current_selected + '.selected', false)
 
-    this.updateClass = ->
+    this.updateClass = (class_name) ->
       this.unselectSelected this.classes, this.classes
+      class_index = _.findIndex( this.classes, {name: class_name.name} )
+      this.classes[ class_index ].selected = true
 
     this.getClassIndex = ->
       _.findIndex this.classes, this.selectedClass
@@ -68,7 +74,6 @@ angular.module "app"
 
     $scope.$watch(angular.bind this, () -> this.selectedClass
     (newVal, oldVal) ->
-      console.log this.classes
       this.selectedMethod = { }
       this.selectedTest = { }
     )
